@@ -5,8 +5,83 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
+    <style>
+        *{
+            padding: 0;
+            margin: 0;
+        }
+        body{
+            background-color: black;
+        }
+        .image-container{
+            height: 100vh;
+            display: flex;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(0%, -25%);
+            column-gap: 5px;
+        }
+        .display-img{
+            width: 20vw;
+            height: 50vh;
+            object-position: 50% 50%;
+            object-fit: cover;
+        }
+        .no-select {
+            -webkit-tap-highlight-color: transparent;
+            -webkit-touch-callout: none;
+            -webkit-user-select: none;
+            -khtml-user-select: none;
+            -moz-user-select: none;
+            -ms-user-select: none;
+            user-select: none;
+        }
+    </style>
 </head>
 <body>
-    <h1>Hello World</h1>
+    <div id="image-container" class="image-container" data-mouse-down="false">
+        <img class="display-img no-select" src="media/001.png" draggable="false">
+        <img class="display-img no-select" src="media/002.jpg" draggable="false">
+        <img class="display-img no-select" src="media/003.jpg" draggable="false">
+        <img class="display-img no-select" src="media/004.jpg" draggable="false">
+        <img class="display-img no-select" src="media/005.jpg" draggable="false">
+        <img class="display-img no-select" src="media/006.jpg" draggable="false">
+        <img class="display-img no-select" src="media/007.jpg" draggable="false">
+        <img class="display-img no-select" src="media/008.jpg" draggable="false">
+        <img class="display-img no-select" src="media/001.png" draggable="false">
+        <img class="display-img no-select" src="media/002.jpg" draggable="false">
+        <img class="display-img no-select" src="media/003.jpg" draggable="false">
+        <img class="display-img no-select" src="media/004.jpg" draggable="false">
+        <img class="display-img no-select" src="media/005.jpg" draggable="false">
+        <img class="display-img no-select" src="media/006.jpg" draggable="false">
+        <img class="display-img no-select" src="media/007.jpg" draggable="false">
+        <img class="display-img no-select" src="media/008.jpg" draggable="false">
+    </div>
+    <script>
+        const imageContainer = document.getElementById("image-container");
+        imageContainer.dataset.lastPercentage = 0;
+        window.addEventListener('mousedown', (e) => {
+            imageContainer.dataset.mouseDown = true;
+            imageContainer.dataset.mouseDownAt = e.clientX;
+        });
+        window.addEventListener('mouseup', (e) => {
+            imageContainer.dataset.mouseDown = false;
+            imageContainer.dataset.lastPercentage = imageContainer.dataset.currentPercentage;
+        });
+        window.addEventListener('mousemove', (e) => {
+            if(imageContainer.dataset.mouseDown === 'false')
+                return;
+
+            let pos = parseFloat(imageContainer.dataset.mouseDownAt) - e.clientX;
+            pos = pos / window.innerWidth * 200 + parseFloat(imageContainer.dataset.lastPercentage);
+            imageContainer.dataset.currentPercentage = pos;
+
+            pos = Math.min(100, Math.max(0, pos));
+            console.log(pos);
+            imageContainer.style.transform = `translate(-${pos}%, -25%)`;
+
+        });
+    </script>
 </body>
 </html>
